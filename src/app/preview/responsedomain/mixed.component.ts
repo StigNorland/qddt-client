@@ -1,23 +1,19 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { ResponseDomain, DomainKind } from '../../responsedomain/responsedomain.classes';
-import { Category, ResponseCardinality } from '../../category/category.classes';
+import { ResponseDomain, DomainKind } from '../../modules/responsedomain/responsedomain.classes';
+import { Category, ResponseCardinality } from '../../modules/category/category.classes';
 
 @Component({
   selector: 'qddt-preview-rd-mixed',
-  moduleId: module.id,
+
   template: `<div>
     <label *ngIf="managedRepresentation && managedRepresentation.children.length > 0" class="active teal-text">
         {{ managedRepresentation.name }} v.<qddt-version [element]="managedRepresentation" ></qddt-version>
     </label>
       <div *ngFor="let rep of managedRepresentation.children">
         <div [ngSwitch]="rep.categoryType">
-          <qddt-preview-rd-scale *ngSwitchCase="'SCALE'"
-              [managedRepresentation]="rep"
-              [displayLayout]="displayLayout">
+          <qddt-preview-rd-scale *ngSwitchCase="'SCALE'" [managedRepresentation]="rep" [displayLayout]="displayLayout">
           </qddt-preview-rd-scale>
-          <qddt-preview-rd-codelist *ngSwitchCase="'LIST'"
-              [managedRepresentation]="rep"
-              [responseCardinality]="responseCardinality">
+          <qddt-preview-rd-codelist *ngSwitchCase="'LIST'" [managedRepresentation]="rep" [responseCardinality]="responseCardinality">
           </qddt-preview-rd-codelist>
           <qddt-preview-rd-datetime *ngSwitchCase="'DATETIME'" [managedRepresentation]="rep"></qddt-preview-rd-datetime>
           <qddt-preview-rd-numeric *ngSwitchCase="'NUMERIC'" [managedRepresentation]="rep"></qddt-preview-rd-numeric>

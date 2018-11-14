@@ -1,7 +1,5 @@
-import { QuestionItem } from '../question/question.classes';
-import { IEntityAudit } from '../shared/classes/interfaces';
-import { ElementKind } from '../shared/classes/enums';
-import { ElementRevisionRef } from '../shared/classes/classes';
+import { QuestionItem } from '../modules/question/question.classes';
+import { ElementKind, ElementRevisionRef, IEntityAudit, IOtherMaterial} from '../classes';
 
 export enum SequenceKind {
   NA,
@@ -18,7 +16,7 @@ export class Universe implements IEntityAudit {
   classKind = ElementKind[ElementKind.UNIVERSE];
   public constructor(init?: Partial<Universe>) {
     Object.assign(this, init);
-    if (!this.name || this.name.length === 0) {
+    if (this.description && ( !this.name || this.name.length === 0)) {
       this.name = this.description.substr(0, 20).toUpperCase();
     }
   }
@@ -32,7 +30,7 @@ export class Instruction implements IEntityAudit {
   classKind = ElementKind[ElementKind.INSTRUCTION];
   public constructor(init?: Partial<Instruction>) {
     Object.assign(this, init);
-    if (!this.name || this.name.length === 0) {
+    if (this.description && ( !this.name || this.name.length === 0)) {
       this.name = this.description.substr(0, 20).toUpperCase();
     }
   }
@@ -46,14 +44,14 @@ export class ConditionCommand {
   command: string;
 }
 
-
 export class QuestionConstruct implements IEntityAudit {
   id: string;
-  name = '';
+  name: string;
+  description: string;
   classKind = ElementKind[ElementKind.QUESTION_CONSTRUCT];
   questionItem: QuestionItem;
   questionItemRevision: number;
-  otherMaterials = [];
+  otherMaterials: IOtherMaterial[] = [];
   universe: Universe[] = [];
   preInstructions: Instruction[] = [];
   postInstructions: Instruction[] = [];

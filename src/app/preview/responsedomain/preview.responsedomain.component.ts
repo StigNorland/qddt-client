@@ -1,13 +1,11 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ResponseDomain, DomainKind } from '../../responsedomain/responsedomain.classes';
-import { Category, ResponseCardinality } from '../../category/category.classes';
+import { ResponseDomain, DomainKind } from '../../modules/responsedomain/responsedomain.classes';
+import { Category, ResponseCardinality } from '../../modules/category/category.classes';
 
 @Component({
   selector: 'qddt-preview-responsedomain',
-  moduleId: module.id,
-  styles: [' .row { min-height: 1rem; margin-bottom: 5px; !important;}',
-           ' .td { padding: 0px;}'
-  ],
+
+  styles: [  ],
   template: `
     <div *ngIf="responseType" class="card-panel grey lighten-5 black-text" style="padding-left:3%; padding-right:5%; margin: 1%">
     <label *ngIf="responseType !== refKind.MIXED" class="active teal-text">

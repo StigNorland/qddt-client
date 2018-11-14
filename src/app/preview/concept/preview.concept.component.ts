@@ -1,14 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { QddtMessageService } from '../../core/global/message.service';
-import { Concept } from '../../home/home.classes';
-import { ElementKind } from '../../shared/classes/enums';
+import {Concept, ElementKind} from '../../classes';
+import {MessageService} from '../../modules/core/services';
 
 @Component({
   selector: 'qddt-preview-concept',
-  moduleId: module.id,
+
   styles: [
-      'div.collapsible { margin:10px;}',
-      'collapsible-header { display: flow-root; margin-bottom: 0px; margin-left: unset; }'
   ],
   templateUrl: 'preview.concept.component.html',
   providers: [ ],
@@ -17,7 +14,7 @@ import { ElementKind } from '../../shared/classes/enums';
 export class PreviewConceptComponent {
   @Input() concept: Concept;
 
-  constructor(private  message: QddtMessageService) {
+  constructor(private  message: MessageService) {
   }
 
   onClickStudy(id: string) {

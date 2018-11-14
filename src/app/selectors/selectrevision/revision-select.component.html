@@ -15,15 +15,15 @@
         </option>
       </select>
     </div>
-    <div class="input-field col s8 l6 right">
+    <div class="input-field col -offset s8">
       <a class="waves-effect waves-light btn right red" (click)="onDismiss()">Dismiss</a>
       <a class="waves-effect waves-light btn right green" (click)="onUseElement()">Use this</a>
     </div>
   </div>
-  <div class="card" *ngIf="!showProgressBar && selectedElement" style="padding: 10pt;">
-    <div class="row teal-text">Preview</div>
-    <div class="teal-text" *ngIf="selectedElement.name" style="padding-left: 10pt; padding-bottom: 5pt">Name</div>
-    <div style="padding-left: 10pt;  padding-bottom: 5pt; color:dimgrey; ">{{ selectedElement.name }}</div>
+  <div class="card" *ngIf="!showProgressBar && selectedElement" style="padding: 3rem; ">
+    <h3 class="row teal-text">Preview</h3>
+    <div class="teal-text" *ngIf="selectedElement.name" style="padding-bottom: 5pt">Name</div>
+    <div style="padding-bottom: 5pt; color:dimgrey; ">{{ selectedElement.name }}</div>
     <qddt-preview-element  [element]="selectedElement"></qddt-preview-element>
   </div>
 </div>

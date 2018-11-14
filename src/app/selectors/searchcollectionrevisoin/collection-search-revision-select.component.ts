@@ -1,14 +1,21 @@
 import {Component, EventEmitter, Input, Output, ChangeDetectionStrategy, OnChanges, SimpleChanges, AfterViewInit} from '@angular/core';
 import { ElementEnumAware } from '../../preview/preview.service';
-import {IElement, IEntityEditAudit, IRevisionRef, IRevisionResultEntity} from '../../shared/classes/interfaces';
-import { ElementKind } from '../../shared/classes/enums';
-import { ElementRevisionRef, QueryInfo } from '../../shared/classes/classes';
-import { QDDT_QUERY_INFOES } from '../../shared/classes/constants';
-import { QddtMessageService } from '../../core/global/message.service';
+import {
+  ElementKind,
+  ElementRevisionRef, getQueryInfo,
+  IElement,
+  IEntityEditAudit,
+  IRevisionRef,
+  IRevisionResultEntity,
+  QueryInfo
+} from '../../classes';
+import {MessageService} from '../../modules/core/services';
 
 @Component({
   selector: 'qddt-collection-revision-search-select',
   changeDetection: ChangeDetectionStrategy.OnPush,
+
+  styles: ['.li.over { border: 2px dashed green;}', '.col {white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }'],
   templateUrl: './collection-search-revision-select.component.html'
 })
 
@@ -32,10 +39,10 @@ export class CollectionSearchRevisionSelectComponent implements OnChanges, After
 
   private queryInfo: QueryInfo;
 
-  constructor( private message: QddtMessageService) { }
+  constructor( private message: MessageService) { }
 
   ngAfterViewInit() {
-    this.queryInfo = this.getQueryInfo();
+    this.queryInfo = getQueryInfo(this.kind);
     this.labelName = this.queryInfo.label;
     this.searchField  = this.queryInfo.fields[0];
   }
@@ -46,8 +53,33 @@ export class CollectionSearchRevisionSelectComponent implements OnChanges, After
     if (changes['revisionList']) {
     }
   }
-  public getQueryInfo(): QueryInfo {
-    return QDDT_QUERY_INFOES[this.kind];
+
+  onDrop(evt: any) {
+    evt.preventDefault();
+    evt.stopPropagation();
+    evt.currentTarget.style.border = 'none';
+    const item = evt.dataTransfer.getData('application/json');
+    console.log(item);
+    // your code goes here after droping files or any
+  }
+
+  onDragOver(evt) {
+     evt.preventDefault();
+     evt.stopPropagation();
+     evt.currentTarget.style.border = 'dashed';
+    }
+
+  onDragLeave(evt) {
+     evt.preventDefault();
+     evt.stopPropagation();
+
+    }
+
+  onDragStart(event, item) {
+    event.currentTarget.style.border = 'dashed';
+    // Set the drag's format and data. Use the event target's id for the data
+    event.dataTransfer.setData('application/json', item);
+    event.dataTransfer.dropEffect = 'move';
   }
 
   public onSearchElements(key) {
@@ -58,15 +90,12 @@ export class CollectionSearchRevisionSelectComponent implements OnChanges, After
     this.searchRevision.emit( { elementId: item.element.id, elementKind: this.kind, elementRevision: null } );
   }
 
-  public onSelectedRevision(revision ) {
+  public onSelectedRevision(revision: ElementRevisionRef ) {
     this.showList.push(revision);
   }
 
   public onShowElement(element: ElementRevisionRef) {
-    const  ref: IElement =  {
-      element: element.elementId,
-      elementKind: element.elementKind };
-    this.message.sendMessage( ref );
+    this.message.sendMessage( element );
   }
 
   public onDeleteItem(index: number) {

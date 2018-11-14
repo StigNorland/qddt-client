@@ -1,20 +1,16 @@
 import { Component, ViewEncapsulation, OnDestroy  } from '@angular/core';
-import { UserService } from './core/user/user.service';
-import { QddtPropertyStoreService } from './core/global/property.service';
-import { QddtMessageService } from './core/global/message.service';
-import { Subscription } from 'rxjs';
-import { IElement, IIdRef, IRevisionRef } from './shared/classes/interfaces';
+import { IElement, IIdRef, IRevisionRef } from './classes';
+import { MessageService, PropertyStoreService, UserService} from './modules/core/services';
 
 // declare var $: any;
 
 
 @Component({
-  moduleId: module.id,
+
   selector: 'qddt-app',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   encapsulation: ViewEncapsulation.None,
-  providers: [UserService]
 })
 
 export class AppComponent  implements OnDestroy {
@@ -23,7 +19,8 @@ export class AppComponent  implements OnDestroy {
 
   private subscription;
 
-  constructor(private users: UserService, private  properties: QddtPropertyStoreService, private messages: QddtMessageService ) {
+  constructor(private users: UserService, private  properties: PropertyStoreService,
+              private messages: MessageService ) {
 
     this.subscription = this.messages.getMessage()
       .subscribe((message) => this.showMessage(message));
@@ -36,63 +33,31 @@ export class AppComponent  implements OnDestroy {
   }
 
   isLoggedIn(): boolean {
-    return !this.users.isTokenExpired();
-  }
-
-  onInstruments() {
-    this.properties.set('current', 'instrument');
-  }
-
-  onSequences() {
-    this.properties.set('current', 'sequence');
-  }
-
-  onQuestions() {
-    this.checkRouter('questionitems', 'list');
-  }
-
-  onHome() {
-    this.checkRouter('home', 'survey');
-  }
-
-  onCategories() {
-    this.checkRouter('categories', 'list');
-  }
-
-  onSchemes() {
-    this.checkRouter('missing', 'list');
-  }
-
-  onResponsedomains() {
-    this.checkRouter('responsedomains', 'list');
-  }
-
-  onConstructs() {
-    this.checkRouter('constructs', 'list');
-  }
-
-  onPublications() {
-    this.checkRouter('publications', 'list');
+    const isExpired = this.users.isTokenExpired();
+    if (isExpired && this.users.loggedIn.getValue()) {
+      this.users.loggedIn.next(false);
+    }
+    return !isExpired;
   }
 
 
   private showMessage<T extends IIdRef|IRevisionRef|IElement>(element: T) {
-    this.ref = element;
+      this.ref = element;
   }
 
-  private checkRouter(target: string, value: string) {
-    const current = this.properties.get('current');
-    if (current === target) {
-      const config = this.properties.get('home');
-      if (config.current !== value) {
-        this.properties.set(target, {'current': value});
-      }
-    } else if (this.properties.get(target) === '') {
-      this.properties.set(target, {'current': value});
-    }
-    this.properties.set('current', target);
-
-  }
+  // private checkRouter(target: string, value: string) {
+  //   const current = this.properties.get('current');
+  //   if (current === target) {
+  //     const config = this.properties.get('home');
+  //     if (config.current !== value) {
+  //       this.properties.set(target, {'current': value});
+  //     }
+  //   } else if (this.properties.get(target) === '') {
+  //     this.properties.set(target, {'current': value});
+  //   }
+  //   this.properties.set('current', target);
+  //
+  // }
 
 
 }

@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { MaterializeModule } from 'angular2-materialize';
 import { ConditionEditComponent } from './conditionconstruct.edit.component';
-import { TemplateService } from '../../template/template.service';
+import { TemplateService } from '../../components/template/template.service';
 
 export function main() {
   describe('Condition edit component', () => {
@@ -27,7 +27,7 @@ export function main() {
         imports: [CommonModule, FormsModule, MaterializeModule]
       });
       // Mock debounceTime
-      Observable.prototype.debounceTime = function () { return this; };
+      // Observable.prototype.debounceTime = function () { return this; };
     });
 
     it('should work with null',

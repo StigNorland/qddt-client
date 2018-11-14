@@ -1,11 +1,11 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { StatementConstruct } from '../controlconstruct.classes';
-import { TemplateService } from '../../template/template.service';
+import { TemplateService } from '../../components/template/template.service';
 
 
 @Component({
   selector: 'qddt-statement-edit',
-  moduleId: module.id,
+
   templateUrl: 'statementconstruct.edit.component.html',
   styles: [ ]
 })

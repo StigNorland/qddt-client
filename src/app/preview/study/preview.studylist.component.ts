@@ -2,12 +2,12 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'qddt-preview-study-list',
-  moduleId: module.id,
+
   styles: [
     '.collapsible { border:1px  }',
   ],
   template: `
-  <ul *ngIf="studyList" materialize="collapsible" class="collapsible" data-collapsible="accordion" style="padding: 5pt;">
+  <ul *ngIf="studyList" materialize="collapsible" class="collapsible" data-collapsible="accordion">
     <li *ngFor="let study of studyList">
       <div class="collapsible-header yellow lighten-5">
         <!--<div class="row">-->
